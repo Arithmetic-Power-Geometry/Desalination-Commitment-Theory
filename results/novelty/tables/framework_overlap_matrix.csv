@@ -1,0 +1,8 @@
+framework,defining_object,primary_question,relation_to_HDC
+Hidden commitment,Q_now=0 AND V_future^U>0,future unavoidable replacement while present need is zero,target object
+Viability kernel,existence of admissible trajectory satisfying constraints,state/control feasibility,overlap but not definitionally identical
+Backward reachability,states leading to target/failure set,future set reachability,overlap but HDC adds zero-present-need and burden magnitude
+Adaptation tipping point,current strategy ceases to meet objectives,strategy expiry,not definitionally identical
+Real options,economic value of flexibility,timing/value of options,different objective
+Robust control,policy satisfying objectives over uncertainty set,robust feasibility,not definitionally identical
+Water-system planning,least-cost/reliable future portfolio,portfolio/cost/reliability,can contain HDC ingredients but not same predicate
