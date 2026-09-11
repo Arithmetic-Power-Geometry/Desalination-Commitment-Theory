@@ -18,10 +18,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install
         run: python -m pip install -e .[dev]
-      - name: Unit tests
+      - name: Tests
         run: pytest --cov=dct --cov-report=term-missing
-      - name: Generate results
+      - name: Level 1 controlled benchmark
         run: python scripts/run_experiments.py
+      - name: Level 2 physical groundwater-salinity benchmark
+        run: python scripts/run_physical_validation.py
       - name: Validate artifact
         run: python scripts/validate_artifact.py
       - name: Final print
@@ -30,6 +32,6 @@ jobs:
         if: matrix.python-version == '3.11'
         uses: actions/upload-artifact@v4
         with:
-          name: dct-results
+          name: dct-full-results
           path: |
             results/
