@@ -25,7 +25,9 @@ jobs:
       - name: Level 2 base physical validation
         run: python scripts/run_physical_validation.py
       - name: Complete Level 2 physical attack
-        run: python scripts/run_level2_attack.py
+        run: python scripts/run_full_physical_attack.py
+      - name: Level 3 formal HDC novelty attack
+        run: python scripts/run_novelty_attack.py
       - name: Validate artifact
         run: python scripts/validate_artifact.py
       - name: Final print
