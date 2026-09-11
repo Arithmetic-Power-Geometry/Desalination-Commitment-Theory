@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-and-reproduce:
+  full-validation:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,16 +22,17 @@ jobs:
         run: pytest --cov=dct --cov-report=term-missing
       - name: Level 1 controlled benchmark
         run: python scripts/run_experiments.py
-      - name: Level 2 physical groundwater-salinity benchmark
+      - name: Level 2 base physical validation
         run: python scripts/run_physical_validation.py
+      - name: Complete Level 2 physical attack
+        run: python scripts/run_level2_attack.py
       - name: Validate artifact
         run: python scripts/validate_artifact.py
       - name: Final print
         run: python scripts/final_print.py
-      - name: Upload generated artifact
+      - name: Upload full generated artifact
         if: matrix.python-version == '3.11'
         uses: actions/upload-artifact@v4
         with:
-          name: dct-full-results
-          path: |
-            results/
+          name: dct-complete-results
+          path: results/
