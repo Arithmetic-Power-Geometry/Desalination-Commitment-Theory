@@ -1,0 +1,6 @@
+metric,value
+monte_carlo_samples,500
+fraction_hidden_commitment,0.982
+fraction_K_P_positive,1.000
+median_K_D,3.188807
+median_K_P,2.488807
