@@ -1,0 +1,12 @@
+horizon: 30.0
+dt: 0.05
+x0: 0.20
+degradation_rate: 0.055
+recovery_rate: 0.42
+nonlinearity: 0.10
+freshwater_base: 1.25
+freshwater_sensitivity: 0.95
+demand0: 1.0
+demand_growth: 0.006
+direct_fraction: 0.70
+intervention_cap: 0.20
