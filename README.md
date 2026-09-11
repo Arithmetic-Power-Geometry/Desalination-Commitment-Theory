@@ -38,7 +38,7 @@ Current controlled benchmark output:
 - `t_star = 2.5` model-time units
 - minimum constant intervention rate for full prevention = `0.039`
 
-### Level 2 — 2-D groundwater/salinity physical benchmark
+### Level 2A — 2-D groundwater/salinity physical benchmark
 Tests whether the same construct survives explicit spatial dynamics using:
 
 - 2-D aquifer grid
@@ -51,7 +51,7 @@ Tests whether the same construct survives explicit spatial dynamics using:
 - demand growth
 - recharge and pumping-reduction interventions
 
-The present Level 2 benchmark gives a scientifically important **mixed result**:
+The base Level 2 benchmark gives a scientifically important **mixed result**:
 
 - hidden commitment survives (`Q_D(t0)=0` with positive future replacement burden)
 - baseline cumulative future replacement = `0.532194`
@@ -60,7 +60,44 @@ The present Level 2 benchmark gives a scientifically important **mixed result**:
 - `K_P = -0.7` for the stated direct fraction
 - no finite `t_star` is found under the tested intervention
 
-This negative preservation result is intentionally retained. It is a falsification outcome, not tuned away. It means the full amplification/window claim is supported by the Level 1 controlled benchmark but is **not yet supported by the current Level 2 physical benchmark**.
+This negative preservation result is intentionally retained. It is a falsification outcome, not tuned away.
+
+## Level 2B — Complete physical attack suite
+
+The repository now executes the full location-neutral software attack requested for the physical layer. The tested suite includes:
+
+1. physical parameter-space search for the preservation-amplification region,
+2. recharge-only / pumping-reduction-only / combined mechanism ablation,
+3. intervention-magnitude sweep,
+4. intervention-timing sweep,
+5. salinity-front migration analysis,
+6. pumping/recharge regime sweep,
+7. hydraulic parameter sweep,
+8. demand/head stress tests,
+9. global sensitivity analysis,
+10. Level-2 Monte Carlo uncertainty,
+11. kill tests,
+12. grid/time convergence,
+13. alternative physical formulation,
+14. delay-intervention full-prevention frontier.
+
+The attack retains **all** tested regimes rather than selecting parameter sets merely because they support the desired conclusion.
+
+### Current complete Level-2 attack result
+
+- Parameter sets tested: `64`
+- Hidden commitment present in parameter-space grid: `100%`
+- `K_P > 0` cases in tested grid: `0`
+- Fraction with `K_P > 0`: `0.0`
+- Finite `t_star` found in the tested delay-intervention frontier: **no**
+- Full-prevention delay points found: `0`
+- Monte Carlo samples: `40`
+- Monte Carlo hidden-commitment fraction: `97.5%`
+- Monte Carlo `K_P > 0` fraction: `0.0`
+
+Therefore the current physical evidence supports **hidden commitment as the robust component**, while preservation amplification and a finite full-prevention window are not supported by the present physical benchmark family.
+
+This is a valid falsification result and is kept explicitly in the artifact.
 
 ## Software validation stack
 
@@ -72,9 +109,12 @@ This negative preservation result is intentionally retained. It is a falsificati
 - dose-response sweeps
 - preservation decomposition
 - multi-source/shared-resource simulation
-- sensitivity and stress analysis
-- uncertainty analysis
-- model ablation and kill tests
+- physical parameter-space mapping
+- global sensitivity and uncertainty
+- stress and kill tests
+- grid/time convergence
+- alternative physical formulation
+- delay-intervention frontier search
 - reproducible figures and CSV tables
 - automated tests and GitHub Actions
 
@@ -85,7 +125,7 @@ python -m pip install -r requirements.txt
 bash reproduce.sh
 ```
 
-The full workflow runs tests, Level 1 experiments, Level 2 physical validation, artifact validation, and final print.
+The full workflow runs tests, Level 1 experiments, Level 2 base physical validation, the complete Level-2 attack suite, artifact validation, and final print.
 
 ## Main generated outputs
 
@@ -99,7 +139,7 @@ The full workflow runs tests, Level 1 experiments, Level 2 physical validation, 
 - `results/figures/dose_response.png`
 - `results/REPORT.md`
 
-### Level 2
+### Level 2 base physical benchmark
 - `results/physical/tables/physical_summary.csv`
 - `results/physical/tables/physical_delay_frontier.csv`
 - `results/physical/tables/physical_dose_response.csv`
@@ -110,11 +150,40 @@ The full workflow runs tests, Level 1 experiments, Level 2 physical validation, 
 - `results/physical/figures/intervention_final_salinity.png`
 - `results/physical/PHYSICAL_REPORT.md`
 
+### Level 2 complete attack
+- `results/attack/tables/attack_summary.csv`
+- `results/attack/tables/parameter_space.csv`
+- `results/attack/tables/positive_kp_cases.csv`
+- `results/attack/tables/kp_boundary_near.csv`
+- `results/attack/tables/mechanisms.csv`
+- `results/attack/tables/magnitude.csv`
+- `results/attack/tables/timing.csv`
+- `results/attack/tables/frontier.csv`
+- `results/attack/tables/salinity_front.csv`
+- `results/attack/tables/location.csv`
+- `results/attack/tables/hydraulic.csv`
+- `results/attack/tables/stress.csv`
+- `results/attack/tables/sensitivity.csv`
+- `results/attack/tables/monte_carlo.csv`
+- `results/attack/tables/kill_tests.csv`
+- `results/attack/tables/convergence.csv`
+- `results/attack/tables/alternative.csv`
+- `results/attack/figures/kp_distribution.png`
+- `results/attack/figures/kp_regime_map.png`
+- `results/attack/figures/magnitude_response.png`
+- `results/attack/figures/timing_sweep.png`
+- `results/attack/figures/salinity_front.png`
+- `results/attack/figures/convergence.png`
+- `results/attack/figures/global_sensitivity.png`
+- `results/attack/ATTACK_REPORT.md`
+
 ## Scientific caution
 
 This artifact is a computational testbed. Numerical outputs are generated from explicit model assumptions and are **not empirical measurements of any named location**. "Unavoidable" means unavoidable only under the stated model, constraints, admissible intervention set, and planning horizon.
 
 The Level 2 model is physically motivated but is not a calibrated field model. Its role is to test whether the proposed commitment/preservation/window construct survives explicit spatial flow and salinity-transport assumptions.
+
+A negative result is a valid scientific result and is never overwritten by goal-directed parameter tuning.
 
 ## License
 
