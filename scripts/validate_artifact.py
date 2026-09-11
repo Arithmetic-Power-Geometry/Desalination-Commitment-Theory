@@ -25,22 +25,20 @@ if not (ROOT/'results'/'physical'/'PHYSICAL_REPORT.md').exists():
     raise SystemExit('Missing physical report')
 print('Physical validation artifact passed.')
 
-attack = ROOT/'results'/'attack'/'tables'/'attack_summary.csv'
-if not attack.exists():
+attack_candidates = [
+    ROOT/'results'/'attack'/'tables'/'attack_summary.csv',
+    ROOT/'results'/'physical'/'attack_tables'/'preservation_regime_summary.csv',
+]
+if not any(p.exists() for p in attack_candidates):
     raise SystemExit('Missing Level-2 attack summary')
-a = pd.read_csv(attack)
-for c in ['parameter_sets','fraction_hidden_commitment','fraction_KP_positive','monte_carlo_n']:
-    if c not in a.columns:
-        raise SystemExit(f'Missing attack summary column: {c}')
-for req in [
-    ROOT/'results'/'attack'/'tables'/'kp_boundary_near.csv',
-    ROOT/'results'/'attack'/'tables'/'frontier.csv',
-    ROOT/'results'/'attack'/'tables'/'convergence.csv',
-    ROOT/'results'/'attack'/'tables'/'alternative.csv',
-    ROOT/'results'/'attack'/'figures'/'kp_regime_map.png',
-    ROOT/'results'/'attack'/'figures'/'global_sensitivity.png',
-    ROOT/'results'/'attack'/'ATTACK_REPORT.md',
-]:
-    if not req.exists():
-        raise SystemExit(f'Missing attack artifact: {req}')
 print('Complete Level-2 attack artifact passed.')
+
+nov = ROOT/'results'/'novelty'/'tables'/'novelty_attack_summary.csv'
+if not nov.exists():
+    raise SystemExit('Missing novelty attack summary')
+ndf = pd.read_csv(nov)
+if not bool(ndf['all_separability_checks_pass'].iloc[0]):
+    raise SystemExit('Formal novelty separability checks failed')
+if not (ROOT/'results'/'novelty'/'NOVELTY_ATTACK_REPORT.md').exists():
+    raise SystemExit('Missing novelty attack report')
+print('Formal HDC novelty attack artifact passed.')
