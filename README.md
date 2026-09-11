@@ -23,20 +23,58 @@ The artifact is location-neutral and built for software-only theoretical/computa
 - Minimum preventive intervention: `V_I_star`
 - Timing-volume frontier: `V_I_star(tau)`
 
+## Two-level validation architecture
+
+### Level 1 — Controlled nonlinear benchmark
+Tests the mathematical construct in a compact nonlinear dynamical system.
+
+Current controlled benchmark output:
+
+- `Q_D(t0) = 0`
+- positive cumulative future replacement burden
+- zero cumulative replacement under immediate maximum intervention
+- `K_D = 3.243718`
+- `K_P = 2.543718`
+- `t_star = 2.5` model-time units
+- minimum constant intervention rate for full prevention = `0.039`
+
+### Level 2 — 2-D groundwater/salinity physical benchmark
+Tests whether the same construct survives explicit spatial dynamics using:
+
+- 2-D aquifer grid
+- hydraulic-head field
+- Darcy-like groundwater flow
+- pumping depression
+- recharge mound
+- advection-dispersion salinity transport
+- potable salinity threshold
+- demand growth
+- recharge and pumping-reduction interventions
+
+The present Level 2 benchmark gives a scientifically important **mixed result**:
+
+- hidden commitment survives (`Q_D(t0)=0` with positive future replacement burden)
+- baseline cumulative future replacement = `0.532194`
+- immediate tested intervention does not reduce that burden in the current physical parameterization
+- `K_D = 0.0`
+- `K_P = -0.7` for the stated direct fraction
+- no finite `t_star` is found under the tested intervention
+
+This negative preservation result is intentionally retained. It is a falsification outcome, not tuned away. It means the full amplification/window claim is supported by the Level 1 controlled benchmark but is **not yet supported by the current Level 2 physical benchmark**.
+
 ## Software validation stack
 
 - reduced-model theorem checks
-- dynamic physical proxy simulation
+- controlled nonlinear simulation
+- physically motivated 2-D groundwater/salinity simulation
 - baseline vs intervention counterfactuals
-- delayed intervention experiments
+- delayed-intervention experiments
 - dose-response sweeps
 - preservation decomposition
 - multi-source/shared-resource simulation
-- sensitivity analysis
+- sensitivity and stress analysis
 - uncertainty analysis
-- stress tests
-- ablation tests
-- falsification / kill tests
+- model ablation and kill tests
 - reproducible figures and CSV tables
 - automated tests and GitHub Actions
 
@@ -47,8 +85,11 @@ python -m pip install -r requirements.txt
 bash reproduce.sh
 ```
 
-Generated outputs are written to:
+The full workflow runs tests, Level 1 experiments, Level 2 physical validation, artifact validation, and final print.
 
+## Main generated outputs
+
+### Level 1
 - `results/tables/summary.csv`
 - `results/tables/delay_frontier.csv`
 - `results/tables/dose_response.csv`
@@ -58,23 +99,22 @@ Generated outputs are written to:
 - `results/figures/dose_response.png`
 - `results/REPORT.md`
 
-## Current synthetic benchmark result
-
-The included generic benchmark currently yields:
-
-- `Q_D(t0) = 0`
-- positive baseline cumulative future desalination
-- zero cumulative desalination under immediate maximum intervention
-- `K_D = 3.243718`
-- `K_P = 2.543718`
-- `t_star = 2.5` model-time units
-- minimum constant intervention rate for full prevention = `0.039`
-
-These numbers are generated from an explicit synthetic model and are **not empirical measurements of any named location**.
+### Level 2
+- `results/physical/tables/physical_summary.csv`
+- `results/physical/tables/physical_delay_frontier.csv`
+- `results/physical/tables/physical_dose_response.csv`
+- `results/physical/tables/physical_stress_tests.csv`
+- `results/physical/figures/physical_commitment_trajectories.png`
+- `results/physical/figures/physical_delay_frontier.png`
+- `results/physical/figures/baseline_final_salinity.png`
+- `results/physical/figures/intervention_final_salinity.png`
+- `results/physical/PHYSICAL_REPORT.md`
 
 ## Scientific caution
 
-This artifact is a computational testbed. Numerical outputs are generated from explicit model assumptions and are **not empirical measurements of any named location**. "Unavoidable" always means unavoidable under the stated model, constraints, admissible intervention set, and planning horizon.
+This artifact is a computational testbed. Numerical outputs are generated from explicit model assumptions and are **not empirical measurements of any named location**. "Unavoidable" means unavoidable only under the stated model, constraints, admissible intervention set, and planning horizon.
+
+The Level 2 model is physically motivated but is not a calibrated field model. Its role is to test whether the proposed commitment/preservation/window construct survives explicit spatial flow and salinity-transport assumptions.
 
 ## License
 
